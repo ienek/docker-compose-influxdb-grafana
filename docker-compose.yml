@@ -46,13 +46,25 @@ services:
     image: 'docker.io/bitnami/kafka:latest'
     ports:
       - '9092:9092'
+      - "7071:7071"
     volumes:
       - 'kafka_data:/bitnami'
     environment:
       - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
       - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_JMX_PORT: 7071
     depends_on:
       - zookeeper
+  jmx_exporter:
+    image: 'bitnami/jmx-exporter:latest'
+    ports:
+      - 5556:5556
+    environment:
+      SERVICE_PORT: 5556
+    volumes:
+      - ./config.yml:/opt/jmx_exporter/config.yml
+    depends_on:
+      - kafka
   prometheus:
     image: prom/prometheus:latest
     ports:

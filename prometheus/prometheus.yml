@@ -12,4 +12,5 @@ scrape_configs:
           - 'go-app:2112'
           - 'python-app:8000'
           - 'redis_exporter:9121'
+          - 'jmx_exporter:5556'
 
